@@ -1,0 +1,5 @@
+There is a sample in this directory.
+
+Please run below schell script.
+$ chmld +x *.sh
+$ ./run.sh

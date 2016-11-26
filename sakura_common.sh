@@ -8,16 +8,19 @@
 # This script worked on bash and GNU/Linux and Cygwin.
 # Please include this script and use it.
 # 
+# version 0.1.1 (2016-11)
+#   bugfix and typo corrected.
+#   Written by SUTO Takayuki
 # version 0.1 (2016-11)
-#   Copyright 2016, IT SUPPORT SAKURA CO., Ltd.
+#   1st commit
 #   Written by SUTO Takayuki
 
 # This script version.
-SAKURA_COMMON_SH_VERSION="0.1"
+SAKURA_COMMON_SH_VERSION="0.1.1"
 
 # IsNumeric
 # Checks whether the string a valid umber.
-# Parameters :
+# Parameters:
 #  $1 - the string to check
 # Returns:
 #  0 if the string is a correctly formatted number
@@ -34,7 +37,7 @@ IsNumeric() {
 
 # IsAlpha
 # Checks whether the string a valid alphabet. 
-# Parameters :
+# Parameters:
 #  $1 - the string to check
 # Returns:
 #  0 if the string is a correctly formatted alphabet 
@@ -51,7 +54,7 @@ IsAlpha() {
 
 # OutStderr
 # Output string to stderr. 
-# Parameters :
+# Parameters:
 #  $* - error message
 # Returns:
 #  Output message to stderr
@@ -61,7 +64,7 @@ OutStderr() {
 
 # GetRangeLineStdin
 # Gets the line of the specified range from stdin.
-# Parameters :
+# Parameters:
 #  $1 - start line number
 #  $2 - stop line number
 # Returns:
@@ -93,7 +96,7 @@ GetLineRangeStdin() {
 
 # GetLineRangeFile
 # Gets the line of the specified range from file.
-# Parameters :
+# Parameters:
 #  $1 - start line number
 #  $2 - stop line number
 #  $3 - target filename
@@ -118,24 +121,22 @@ GetLineRangeFile() {
     echo "$FUNC : $3 no such file" 1>&2
     return 2
   fi
-  if [ -p /dev/stdin ]; then
-    cat - | sed -n "$1,$2p"
-      if [ $? -ne 0 ]; then
-        echo "$FUNC : failed" 1>&2
-        return 2
-      fi
-  fi
+  cat "$3" | sed -n "$1,$2p"
+    if [ $? -ne 0 ]; then
+      echo "$FUNC : failed" 1>&2
+      return 2
+    fi
   return 0
 }
 
 # IsEndOfMonth
-# Check leap year.
-# Parameters :
+# Check end of the month.
+# Parameters:
 #  None
 # Returns:
 #  $?=0 if not end of the month
 #  $?=1 if end of month
-IsEndOfMonath() {
+IsEndOfMonth() {
   if [ `date -d day '+%d'` = '01' ]; then
     return 1
   fi
@@ -144,7 +145,7 @@ IsEndOfMonath() {
 
 # IsLeapYear 
 # Check leap year.
-# Parameters :
+# Parameters:
 #  $1 - year(YYYY)
 # Returns:
 #  $?=0 if not leap year
@@ -174,7 +175,7 @@ IsLeapYear() {
 
 # GetDateYYYYMMDD
 # Convert current date to YYYYMMDD format.
-# Parameters :
+# Parameters:
 #  None
 # Returns:
 #  Output YYYYMMDD to stdout
@@ -184,7 +185,7 @@ GetDateYYYYMMDD() {
 
 # GetDateYYYY-MM-DD
 # Convert current date to YYYY-MM-DD format.
-# Parameters :
+# Parameters:
 #  None
 # Returns:
 #  Output YYYY-MM-DD to stdout
@@ -194,7 +195,7 @@ GetDateYYYY-MM-DD() {
 
 # GetDateYYYY/MM/DD
 # Convert current date to YYYY/MM/DD format.
-# Parameters :
+# Parameters:
 #  None
 # Returns:
 #  Output YYYY/MM/DD to stdout
@@ -204,7 +205,7 @@ GetDateYYYY/MM/DD() {
 
 # GetDateYYYYMMDDHHMISS 
 # Convert current date to YYYYMMDDHHMISS format.
-# Parameters :
+# Parameters:
 #  None
 # Returns:
 #  Output YYYYMMDDHMS to stdout
@@ -212,29 +213,29 @@ GetDateYYYYMMDDHHMISS() {
   date '+%Y%m%d%H%M%S'
 }
 
-# GetDateYYYY/MM/DD_H:M:S
+# GetDateYYYY/MM/DD_HH:MI:SS
 # Convert current date to YYYY/MM/DD HH:MI:SS format.
-# Parameters :
+# Parameters:
 #  None
 # Returns:
 #  Output YYYY/MM/DD HH:MI:SS to stdout
-GetDateYYYYMMDDHHMISS() {
+GetDateYYYY/MM/DD_HH:MI:SS() {
   date '+%Y/%m/%d %H:%M:%S'
 }
 
 # GetTimeHHMISS
 # Convert current time to HHMISS format.
-# Parameters :
+# Parameters:
 #  None
 # Returns:
 #  Output HHMISS to stdout
-GetDateYYYYMMDDHHMISS() {
+GetTimeHHMISS() {
   date '+%H%M%S'
 }
 
 # GetTimeHH:MI:SS
 # Convert current time to HHMISS format.
-# Parameters :
+# Parameters:
 #  None
 # Returns:
 #  Output HHMISS to stdout
@@ -244,7 +245,7 @@ GetDateHH:MI:SS() {
 
 # UnixTime
 # seconds since 1970-01-01 00:00:00 UTC.
-# Parameters :
+# Parameters:
 #  [$1] - reference date
 # Returns:
 #  Output Unix Time to stdout
@@ -274,7 +275,7 @@ UnixTime() {
 
 # UnixTime2UTC
 # Display UNIXTIME to UTC time.
-# Parameters :
+# Parameters:
 #  $1 - Unix Time
 # Returns:
 #  Output UTC Datetime to stdout
@@ -301,10 +302,10 @@ UnixTime2UTC() {
 
 # UnixTime2LocalTime
 # Display UNIXTIME to Local time.
-# Parameters :
+# Parameters:
 #  $1 - Unix Time
 # Returns:
-#  Output UTC Datetime to stdout
+#  Output Local datetime to stdout
 #  $?=0 if successful.
 #  $?>0 if failed.
 UnixTime2LocalTime() {
@@ -329,7 +330,7 @@ UnixTime2LocalTime() {
 # AddDays
 # Returns a new date string that adds the number of days specified
 # on the specified date to the value.
-# Parameters :
+# Parameters:
 #  $1 - number of days
 #  [$2] - reference date
 #    nothing if reference date is now
@@ -368,7 +369,7 @@ AddDays() {
 # SubtractDays
 # Returns a new date string that subtracts the number of days specified on
 # the specified date to the value.
-# Parameters :
+# Parameters:
 #  $1 - number of days
 #  [$2] - reference date
 #    nothing if reference date is now
@@ -408,7 +409,7 @@ SubtractDays() {
 # Subtract the date and date. ($1 - $2)
 # the specified date to the value.
 # Not support time, date only.
-# Parameters :
+# Parameters:
 #  $1 - date %Y-%m-%d
 #  $2 - date %Y-%m-%d
 # Returns:
@@ -430,7 +431,7 @@ SubtractDateAndDate() {
 
 # GetDateIntoMap
 # Assign the now date to the Map.
-# Parameters :
+# Parameters:
 #   None
 # Returns:
 #    $DATEMAP
@@ -470,7 +471,7 @@ GetDateIntoMap() {
 
 # ReadFileIntoArray
 # Read lines in file into an array
-# Parameters :
+# Parameters:
 #  $1 = filename
 # Returns:
 #  Set the array result to $array_list
@@ -496,7 +497,7 @@ ReadFileIntoArray() {
 
 # ReadStdinIntoArray
 # Read lines in stdin into an array
-# Parameters :
+# Parameters:
 #  None
 # Returns:
 #  Set the array result to $array_list
@@ -505,7 +506,7 @@ ReadFileIntoArray() {
 # Usage :
 #  i.g.
 #    #/bin/bash
-#    #use Process Substitution, not use pipe
+#    #run Process Substitution, not run pipe
 #    source ./sakura_common.sh
 #    ReadStdinIntoArray < <(find .)
 #    echo ${#array_list[@]}
@@ -524,7 +525,7 @@ ReadStdinIntoArray() {
 # Rigth
 # Returns a string containing a specified number of characters
 # from the right side of a string.
-# Parameters :
+# Parameters:
 #  $1 = string
 #  $2 = length
 # Returns:
@@ -558,7 +559,7 @@ Right() {
 # Left
 # Returns a string that contains a specified number of characters
 # from the left side of a string.
-# Parameters :
+# Parameters:
 #  $1 = string
 #  $2 = length
 # Returns:
@@ -592,7 +593,7 @@ Left() {
 # Mid
 # Returns a string containing a specified number of characters
 # from a string.
-# Parameters :
+# Parameters:
 #  $1 = string
 #  $2 = start (one-based)
 #  $3 = length
@@ -626,7 +627,7 @@ Mid() {
 
 # Length
 # Return the length(byte) of the string.
-# Parameters :
+# Parameters:
 #  $1 = string
 # Returns:
 #  length(byte)
@@ -648,7 +649,7 @@ Length() {
 
 # UpperCase
 # All upper case letters.
-# Parameters :
+# Parameters:
 #  $1 = string
 # Returns:
 #  all upper case letters.
@@ -670,7 +671,7 @@ UpperCase() {
 
 # LowerCase
 # All lower case letters.
-# Parameters :
+# Parameters:
 #  $1 = string
 # Returns:
 #  all lower case letters.
@@ -692,7 +693,7 @@ LowerCase() {
 
 # Trim
 # Remove the left side and right side white spaces.
-# Parameters :
+# Parameters:
 #  $1 = string
 # Returns:
 #  string
@@ -710,7 +711,7 @@ Trim() {
 
 # LTrim
 # Remove the left side white spaces.
-# Parameters :
+# Parameters:
 #  $1 = string
 # Returns:
 #  string
@@ -728,7 +729,7 @@ LTrim() {
 
 # RTrim
 # Remove the right side white spaces.
-# Parameters :
+# Parameters:
 #  $1 = string
 # Returns:
 #  string
