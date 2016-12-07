@@ -445,7 +445,7 @@ SubtractDateAndDate() {
 #    $?=0 if successful.
 #    $?>0 if failed.
 # Usage :
-#  i.g.
+#  e.g.
 #    #/bin/bash
 #    source ./sakura_common.sh
 #    GetDateIntoMap
@@ -504,7 +504,7 @@ ReadFileIntoArray() {
 #  $?=0 if successful.
 #  $?>0 if failed.
 # Usage :
-#  i.g.
+#  e.g.
 #    #/bin/bash
 #    #run Process Substitution, not run pipe
 #    source ./sakura_common.sh

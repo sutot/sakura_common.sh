@@ -4,7 +4,7 @@
 source ./../sakura_common.sh
 
 # Gets the line of the specified range from stdin.
-# i.g.
+# e.g.
 #   cat /etc/hosts | GetLineRangeStdin 2 10
 
 cat <<EOS | GetLineRangeStdin 2 4
